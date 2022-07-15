@@ -1,0 +1,187 @@
+{% extends "store/tamplate.html" %}
+{% load static %}
+{% block body %}
+
+    <!-- page title -->
+    <!--================================
+    =            Page Title            =
+    =================================-->
+    <section class="page-title">
+        <!-- Container Start -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <!-- Title text -->
+                    <h3>Edit Order</h3>
+                </div>
+            </div>
+        </div>
+        <!-- Container End -->
+    </section>
+    <!-- page title -->
+
+    <!-- edit product Detail start-->
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                     <div class="product-slider">
+                        <div class="product-slider-item my-4" data-image="/store{{ product.productId.img_url.url }}">
+                            <img class="img-fluid w-100" src="/store{{ product.productId.img_url.url }}" alt="product-img">
+                        </div>
+                        <div class="product-slider-item my-4" data-image="/store{{ product.productId.img_url.url }}">
+                            <img class="d-block img-fluid w-100" src="/store{{ product.productId.img_url.url }}"
+                                alt="Second slide">
+                        </div>
+                        <div class="product-slider-item my-4" data-image="/store{{ product.productId.img_url.url }}">
+                            <img class="d-block img-fluid w-100" src="/store{{ product.productId.img_url.url }}" alt="Third slide">
+                        </div>
+                        <div class="product-slider-item my-4" data-image="/store{{ product.productId.img_url.url }}">
+                            <img class="d-block img-fluid w-100" src="/store{{ product.productId.img_url.url }}" alt="Third slide">
+                        </div>
+                        <div class="product-slider-item my-4" data-image="/store{{ product.productId.img_url.url }}">
+                            <img class="d-block img-fluid w-100" src="/store{{ product.productId.img_url.url }}" alt="Third slide">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6  pl-5">
+                    <h1 class="mb-4">{{ product.productId.name }}</h1>
+                    <table class="table table-bordered table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Cetegory</th>
+                                <th>Specifications</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-left">
+                            <tr>
+                                <td>Price</td>
+                                <td>{{ product.productId.display_price }} Rs</td>
+                            </tr>
+                            <tr>
+                                <td>Front Camara</td>
+                                <td>{{ product.front_camara }}</td>
+                            </tr>
+                            <tr>
+                                <td>Rear Camara</td>
+                                <td>{{ product.rear_Camara }}</td>
+                            </tr>
+                            <tr>
+                                <td>Ram</td>
+                                <td>{{ product.ram }} GB</td>
+                            </tr>
+                            <tr>
+                                <td>Inbuilt Storage</td>
+                                <td>{{ product.inbuilt_storage }}</td>
+                            </tr>
+                            {% if product.expandable_storage %}
+                                <tr>
+                                    <td>Expandable Storage</td>
+                                    <td>{{ product.expandable_storage }} GB</td>
+                                </tr>
+                            {% endif %}
+
+                            <tr>
+                                <td>Screen</td>
+                                <td>{{ product.screen }}</td>
+                            </tr>
+                            <tr>
+                                <td>Battery Power</td>
+                                <td>{{ product.battery_power }}</td>
+                            </tr>
+                            <tr>
+                                <td>Battery Type</td>
+                                <td>{{ product.battery_type }}</td>
+                            </tr>
+                            <tr>
+                                <td>Operating System</td>
+                                <td>{{ product.operating_system }}</td>
+                            </tr>
+                            <tr>
+                                <td>Processor Brand</td>
+                                <td>{{ product.processor_brand }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <form action="" method="post">
+                        <div class="container-fluid text-center">
+                            <h4><label for="quantity" class="col-form-label">Quantity : </label></h4>
+                            <div>
+                                <button type="button" id="dec" role="button" onclick="quantityChange(false)"
+                                    class="btn btn-outline-primary" style="font-size:35px; padding: 0 15px;">-</button>
+
+                                <input type="number" id="quantityId" value="{{ cart }}"
+                                    class="form-control w-25 d-inline-block mb-4 mx-2" name="quantity">
+
+                                <button type="button" role="button" onclick="quantityChange()"
+                                    class="btn btn-outline-primary" style="font-size:35px; padding: 0 15px;">+</button>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Update ">
+                        </div>
+                    </form>
+
+
+                    <!-- <form action="#">
+                        <fieldset class="p-4">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-6 py-2">
+                                        <input type="text" placeholder="Name *" class="form-control" required>
+                                    </div>
+                                    <div class="col-lg-6 pt-2">
+                                        <input type="email" placeholder="Email *" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <select name="" id="" class="form-control w-100">
+                                <option value="1">Select Category</option>
+                                <option value="1">Laptop</option>
+                                <option value="1">iPhone</option>
+                                <option value="1">Monitor</option>
+                                <option value="1">I need</option>
+                            </select>
+                            <textarea name="message" id="" placeholder="Message *"
+                                class="border w-100 p-3 mt-3 mt-lg-4"></textarea>
+                            <div class="btn-grounp">
+                                <button type="submit" class="btn btn-primary mt-2 float-right">SUBMIT</button>
+                            </div>
+                        </fieldset>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Product end -->
+
+{% endblock %}
+
+{% block script %}
+    <script>
+            function quantityChange(add = true) {
+        let tmp = document.querySelector("#quantityId").value;
+        if (add) {
+            tmp++;
+        }
+        else {
+            tmp--;
+        }
+        if (tmp <= 0) {
+            tmp = 0;
+            document.querySelector("#dec").disabled = "disabled";
+            document.querySelector("#dec").classList.add("btn-dark");
+            document.querySelector("#dec").classList.remove("btn-outline-primary");
+        }
+        else {
+            document.querySelector("#dec").classList.add("btn-outline-primary");
+            document.querySelector("#dec").classList.remove("btn-dark");
+            document.querySelector("#dec").disabled = false;
+        }
+        document.querySelector("#quantityId").value = tmp;
+    }
+    </script>
+{% endblock %}

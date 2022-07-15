@@ -1,0 +1,244 @@
+{% extends 'store/tamplate.html' %}
+{% load static %}
+{% block style %}
+    <style>
+
+        .btn-outline-primary {
+            padding: 12px 20px !important;
+            font-size: 15px !important;
+            margin: 0 10px;
+        }
+
+        .product-thumb{
+            width:40% !important;
+            vertical-align: top !important;
+        }
+        .product-details{
+            vertical-align: top !important;
+        }
+        .btn{
+            font-weight: 600;
+        }
+        .btn-sm{
+            font-size: 13px;
+            padding: 7px 15px !important;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<!--==================================
+=            User Profile            =
+===================================-->
+<section class="dashboard section">
+  <!-- Container Start -->
+  <div class="container">
+    <!-- Row Start -->
+    <div class="row">
+      <div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
+        <div class="sidebar">
+          <!-- User Widget -->
+          <div class="widget user-dashboard-profile">
+            <!-- User Image -->
+            <div class="profile-thumb">
+              <img src="{%  static 'images/user/user_icon.png' %}" alt="" class="rounded-circle">
+            </div>
+            <!-- User Name -->
+            <h5 class="text-center">Demo User 1</h5>
+            <p>Joined February 06, 2017</p>
+            <a href="{% url 'store:userProfile' %}" class="btn btn-main-sm">Edit Profile</a>
+          </div>
+          <!-- Dashboard Links -->
+          <div class="widget user-dashboard-menu">
+            <ul>
+              <li class="active"><a href=""><i class="fa fa-user"></i> My Cart Item</a></li>
+              <li><a ><i class="fa fa-bookmark-o"></i> Favourites <span>5</span></a></li>
+              <li><a href="{% url 'store:myOrder' %}"><i class="fa fa-file-archive-o"></i>My Orders </a></li>
+              <li><a ><i class="fa fa-bolt"></i> Past Orders</a></li>
+              <li><a href="{% url 'store:logOut' %}"><i class="fa fa-cog"></i> Logout</a></li>
+              <li><a href="" data-toggle="modal" data-target="#deleteaccount"><i class="fa fa-power-off"></i>Delete
+                  Account</a></li>
+            </ul>
+          </div>
+
+          <!-- delete-account modal -->
+          						  <!-- delete account popup modal start-->
+                <!-- Modal -->
+                <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header border-bottom-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body text-center">
+                        <img src="{% static 'images/account/Account1.png' %}" class="img-fluid mb-2" alt="">
+                        <h6 class="py-2">Are you sure you want to delete your account?</h6>
+                        <p>Do you really want to delete these records? This process cannot be undone.</p>
+                        <textarea name="message" id="" cols="40" rows="4" class="w-100 rounded"></textarea>
+                      </div>
+                      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-lg-between justify-content-center">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- delete account popup modal end-->
+          <!-- delete-account modal -->
+
+        </div>
+      </div>
+      <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+        <!-- Recently Favorited -->
+        <div class="widget dashboard-container my-adslist">
+          <h3 class="widget-header">My Cart</h3>
+          <table class="table table-responsive product-dashboard-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product Title</th>
+              </tr>
+            </thead>
+            <tbody>
+
+                {% for d in data %}
+
+              <tr>
+
+                <td class="product-thumb ">
+                  <img class="img-fluid" height="auto" src="/store{{ d.product.img }}" alt="image description"></td>
+                <td class="product-details pl-3">
+                  <h3 class="title">{{ d.product.name }}</h3>
+                  <span class="add-id"><strong>Product ID:</strong> {{ d.product.id }}</span>
+                  <span ><strong>Quantity: </strong>{{ d.quantity }}</span>
+                  <span><strong>Added on: </strong><time>{{ d.added_at }}</time> </span>
+                  <span class="status active"><strong>Status</strong>Active</span>
+                  <span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
+                    <h6 class="my-3 ">Quantity :</h6>
+                    <form action="{% url 'store:place_order' %}" method="post" data-quantity="{{ d.quantity }}" class="quantity-form" >
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ d.product.id }}">
+                        <input type="hidden" name="cart_id" value="{{ d.cart }}">
+                         <div class="w-75">
+                            <button type="button" role="button" class="btn btn-outline-primary" id="dec{{ d.product.id }}" onclick="quantityChange(false,'#quantityId{{ d.product.id }}','#dec{{ d.product.id }}','#update{{ d.product.id }}')"> - </button>
+                            <div class="form-group w-25 d-inline-block" >
+                                <input type="number" min="1" name="quantity" value="{{ d.quantity }}" id="quantityId{{ d.product.id }}" class="form-control quantity-input ">
+                            </div>
+                            <button type="button" role="button" class="btn btn-outline-primary" onclick="quantityChange(true,'#quantityId{{ d.product.id }}','#dec{{ d.product.id }}','#update{{ d.product.id }}')"> + </button>
+                        </div>
+                        <input type="submit" value="Place Order" id="update{{ d.product.id }}" class="btn btn-primary btn-sm m1">
+                        <a href="{% url 'store:remove_cart_item' d.cart %}" class="btn btn-outline-danger btn-sm"> Remove </a>
+
+                    </form>
+
+                </td>
+{#                <td class="product-category"><span class="categories">{{ d.product.category }}</span></td>#}
+{#                <td class="action" data-title="Action">#}
+{#                  <div class="">#}
+{#                    <ul class="list-inline justify-content-center flex-column">#}
+{#                      <li class="list-inline-item">#}
+{#                        <a data-toggle="tooltip" data-placement="top" title="view" class="view" href="category.html">#}
+{#                          <i class="fa fa-eye"></i>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li class="list-inline-item">#}
+{#                        <a class="edit" data-toggle="tooltip" data-placement="top" title="Edit" href="{% url 'store:edit_cart_item' d.product.id %}">#}
+{#                          <i class="fa fa-pencil"></i>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                      <li class="list-inline-item">#}
+{#                        <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="">#}
+{#                          <i class="fa fa-trash"></i>#}
+{#                        </a>#}
+{#                      </li>#}
+{#                    </ul>#}
+{#                  </div>#}
+{#                </td>#}
+{#              #}
+              </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+          </table>
+
+        </div>
+
+        <!-- pagination -->
+        <div class="pagination justify-content-center">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+									<span class="sr-only">Previous</span>
+								</a>
+							</li>
+							<li class="page-item"><a class="page-link" href="#">1</a></li>
+							<li class="page-item active"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+									<span class="sr-only">Next</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+        <!-- pagination -->
+
+      </div>
+    </div>
+    <!-- Row End -->
+  </div>
+  <!-- Container End -->
+</section>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function quantityChange(add = true,elementId,btnId,updateBtn) {
+            document.querySelector(updateBtn).classList.remove("disabled");
+            let tmp = document.querySelector(elementId).value;
+            if (add) {
+                tmp++;
+            }
+            else {
+                tmp--;
+            }
+            if (tmp <= 0) {
+                tmp = 0;
+                document.querySelector(btnId).disabled = "disabled";
+                document.querySelector(btnId).classList.add("btn-dark");
+                document.querySelector(btnId).classList.remove("btn-outline-primary");
+            }
+            else {
+                document.querySelector(btnId).classList.add("btn-outline-primary");
+                document.querySelector(btnId).classList.remove("btn-dark");
+                document.querySelector(btnId).disabled = false;
+            }
+            document.querySelector(elementId).value = parseInt(tmp);
+        }
+
+        document.querySelectorAll(".quantity-form").forEach(form=>{
+            form.addEventListener("submit",function(form){
+                let previousQuantity = form.target.dataset.quantity;
+
+                let fm = form.target;
+                let currentQuantity = fm.elements["quantity"].value;
+
+                if(previousQuantity === currentQuantity){
+                    form.preventDefault();
+                }
+                return false;
+            })
+        })
+
+    </script>
+{% endblock %}

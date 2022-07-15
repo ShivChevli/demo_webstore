@@ -1,0 +1,166 @@
+{% extends 'store/tamplate.html' %}
+{% load static %}
+{% block style %}
+<style>
+    button:disabled{
+        background-color: #555555 !important;
+    }
+    button:disabled:hover{
+        background-color: #555555 !important;
+        cursor: default;
+    }
+    .msg{
+        color: #f00;
+        text-align: center;
+        font-weight: 800;
+    }
+    </style>
+{% endblock %}
+{% block body %}
+
+<section class="login py-5 border-top-1">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-8 align-item-center">
+                    <div class="border border">
+                        <h3 class="bg-gray p-4">Register Now</h3>
+                        <div class="msg"> {{ message }}</div>
+
+                        <form action="{% url 'store:signIn' %}" method="post">
+                            {% csrf_token %}
+                            <fieldset class="p-4">
+                                <input type="email" required placeholder="Email*" name="userName" class="border p-3 w-100 my-2">
+                                <input type="password" required placeholder="Password*" name="password" class="border p-3 w-100 my-2">
+                                <input type="password" required placeholder="Confirm Password*" name="Re-password" class="border p-3 w-100 my-2">
+                                <div class="loggedin-forgot d-inline-flex my-3">
+                                        <input type="checkbox" required id="registering" class="mt-1">
+                                        <label for="registering" class="px-2">By registering, you accept our <a class="text-primary font-weight-bold" href="{% url 'store:termAndCondition' %}">Terms & Conditions</a></label>
+                                </div>
+                                <button disabled type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold" id="submitBtn">Register Now</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        let sbtn = document.querySelector("#submitBtn");
+        document.querySelector("#registering").addEventListener("change", function () {
+            console.log(this.checked);
+            if(this.checked){
+                sbtn.disabled  = false;
+            }
+            else{
+                sbtn.disabled  = true;
+            }
+        });
+
+
+    </script>
+{% endblock %}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{##}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#    <title>DemoStore-LogIn</title>#}
+{#    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">#}
+{#    <style>#}
+{#        * {#}
+{#            margin: 0;#}
+{#            padding: 0;#}
+{#        }#}
+{##}
+{#        body {#}
+{#            display: flex;#}
+{#            align-items: center;#}
+{#            justify-content: center;#}
+{#            height: 100vh;#}
+{#        }#}
+{##}
+{#        main {#}
+{#            width: 100%;#}
+{#            text-align: center;#}
+{#            margin: 10px auto;#}
+{#            max-width: 500px;#}
+{#            border-radius: 20px;#}
+{#            border: 2px solid #000;#}
+{#            min-height: 500px;#}
+{#            padding: 10px 20px;#}
+{#        }#}
+{##}
+{#        .heading {#}
+{#            padding-bottom: 10px;#}
+{#            border-bottom: 1px solid black;#}
+{#        }#}
+{##}
+{#        .msg {#}
+{#            /* padding-bottom: 10px; */#}
+{#            color: #f00;#}
+{#            font-weight: 600;#}
+{#        }#}
+{##}
+{#        .login-from {#}
+{#            text-align: left;#}
+{#            font-size: 18px;#}
+{#            font-weight: 600;#}
+{#        }#}
+{##}
+{#        .login-from label {#}
+{#            margin: 10px 5px;#}
+{#        }#}
+{##}
+{#        .line-top {#}
+{#            border-top: 1px solid black;#}
+{#            padding: 10px 0;#}
+{#        }#}
+{##}
+{#        .submit-btn {#}
+{#            font-size: 18px;#}
+{#            font-weight: 600;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{##}
+{#<body>#}
+{#    <main>#}
+{#        <h1 class="heading">SignIn Page</h1>#}
+{#        <p class="msg">{{ message }}</p>#}
+{#        <div class="login-from">#}
+{#            <form action="{% url 'store:signIn' %}" method="post">#}
+{#                {% csrf_token %}#}
+{#                <div class="form-group">#}
+{#                    <label for="">User Email</label>#}
+{#                    <input type="email" class="form-control form-control-lg" name="userName" id="userName"#}
+{#                        placeholder="Enter Email">#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="pwd">Password</label>#}
+{#                    <input type="password" class="form-control form-control-lg" name="password" id="pwd"#}
+{#                        placeholder="Enter password">#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label for="pwd">Password</label>#}
+{#                    <input type="password" class="form-control form-control-lg" name="Re-password" id="pwd"#}
+{#                        placeholder="Enter password">#}
+{#                </div>#}
+{#                <div class="my-4 pt-4 text-center line-top">#}
+{#                    <input type="submit" value="SingIn" class="submit-btn btn btn-primary px-4 py-2">#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#        <div class="line-top">#}
+{#            <p>#}
+{#                Already have Account ? <a href="{% url 'store:logInForm'  %}">LogIn here</a>#}
+{#            </p>#}
+{#        </div>#}
+{#    </main>#}
+{#</body>#}
+{##}
+{#</html>#}
